@@ -20,6 +20,7 @@ class Directory extends React.Component {
                         title={cat.title}
                         imageURL={cat.imageUrl}
                         size={cat.size}
+                        linkUrl={cat.linkUrl}
                     />
                 ))}
             </div>
