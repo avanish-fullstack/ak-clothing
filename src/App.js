@@ -1,32 +1,47 @@
-import React from 'react'
-import './App.css'
-import Home from './pages/home/home.component'
-import { Route, Switch } from 'react-router-dom'
-import ShopPage from './pages/shop/shop.component'
-import Header from './components/header/header.component'
-import SignInAndSignUp from './pages/sign-in-and-signup/sign-in-and-signup'
-import { auth } from './firebase/firebase.utils'
+import React from "react";
+import "./App.css";
+import Home from "./pages/home/home.component";
+import { Route, Switch } from "react-router-dom";
+import ShopPage from "./pages/shop/shop.component";
+import Header from "./components/header/header.component";
+import SignInAndSignUp from "./pages/sign-in-and-signup/sign-in-and-signup";
+import {
+    auth,
+    createUserProfileDocument,
+    firestore,
+} from "./firebase/firebase.utils";
 
 class App extends React.Component {
     constructor() {
-        super()
+        super();
         this.state = {
             currentUser: null,
-        }
+        };
     }
 
-    unsubscribefromauth = null
+    unsubscribefromauth = null;
 
     componentDidMount() {
-        this.unsubscribefromauth = auth.onAuthStateChanged((user) => {
-            this.setState({ currentUser: user })
-
-            console.log(user)
-        })
+        this.unsubscribefromauth = auth.onAuthStateChanged(async (userAuth) => {
+            if (userAuth) {
+                const userRef = await createUserProfileDocument(userAuth);
+                userRef.onSnapshot((snapshot) => {
+                    this.setState({
+                        currentUser: {
+                            id: snapshot.id,
+                            ...snapshot.data(),
+                        },
+                    });
+                    console.log("on snapshot");
+                });
+            } else {
+                this.setState({ currentUser: userAuth });
+            }
+        });
     }
 
     componentWillUnmount() {
-        this.unsubscribefromauth()
+        this.unsubscribefromauth();
     }
 
     render() {
@@ -39,8 +54,8 @@ class App extends React.Component {
                     <Route path="/signin" component={SignInAndSignUp}></Route>
                 </Switch>
             </div>
-        )
+        );
     }
 }
 
-export default App
+export default App;
