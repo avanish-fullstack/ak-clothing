@@ -2,16 +2,7 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/auth";
 
-const config = {
-    apiKey: "AIzaSyA32zn0f91xy7dc7dsUNZ7YawbrQGPqKCc",
-    authDomain: "akclothingdb.firebaseapp.com",
-    databaseURL: "https://akclothingdb.firebaseio.com",
-    projectId: "akclothingdb",
-    storageBucket: "akclothingdb.appspot.com",
-    messagingSenderId: "45221581044",
-    appId: "1:45221581044:web:f9817f86a1bf9c091fcea1",
-    measurementId: "G-5YC2VTHKLH",
-};
+const config = {};
 
 export const createUserProfileDocument = async (user, otherData) => {
     if (!user) return;
