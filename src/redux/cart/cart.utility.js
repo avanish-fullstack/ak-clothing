@@ -14,4 +14,22 @@ const addItemToCart = (cartItems, cartItemToAdd) => {
     return [...cartItems, { ...cartItemToAdd, quantity: 1 }];
 };
 
-export { addItemToCart };
+const removeItemFromCart = (cartItems, cartItemToRemove) => {
+    const existingCartItem = cartItems.find(
+        (cartitem) => cartitem.id === cartItemToRemove.id
+    );
+
+    if (existingCartItem.quantity === 1) {
+        return cartItems.filter(
+            (cartitem) => cartitem.id !== cartItemToRemove.id
+        );
+    }
+
+    return cartItems.map((cartitem) =>
+        cartitem.id === cartItemToRemove.id
+            ? { ...cartitem, quantity: cartitem.quantity - 1 }
+            : cartitem
+    );
+};
+
+export { addItemToCart, removeItemFromCart };
